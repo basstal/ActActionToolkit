@@ -530,7 +530,7 @@ void SActNotifyPoolNotifyNodeWidget::OnFocusLost(const FFocusEvent& InFocusEvent
 
 void SActNotifyPoolNotifyNodeWidget::Tick(const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime)
 {
-	ScreenPosition = AllottedGeometry.AbsolutePosition;
+	ScreenPosition = FVector2D(AllottedGeometry.AbsolutePosition);
 }
 
 FText SActNotifyPoolNotifyNodeWidget::GetNotifyText() const

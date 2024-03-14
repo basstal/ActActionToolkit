@@ -3,6 +3,7 @@
 #include "ActNotifyPoolNotifyNodeWidget.h"
 #include "AssetSelection.h"
 #include "BlueprintActionDatabase.h"
+#include "EditorStyleSet.h"
 #include "IEditableSkeleton.h"
 #include "ISkeletonEditorModule.h"
 #include "SCurveEditor.h"
@@ -24,7 +25,7 @@ void SActNotifyPoolLaneWidget::Construct(const FArguments& InArgs)
 {
 	SetClipping(EWidgetClipping::ClipToBounds);
 	LaneIndex = InArgs._LaneIndex;
-
+	NovaDB::CreateSP<FActCreateNewNotify>("CreateNewNotify", nullptr);
 	ChildSlot
 	[
 		SAssignNew(TrackBorder, SBorder)
@@ -319,6 +320,8 @@ TSharedPtr<SWidget> SActNotifyPoolLaneWidget::SummonContextMenu(const FPointerEv
 	FAnimNotifyEvent* NotifyEvent = NotifyNode ? NotifyNode->AnimNotifyEvent : nullptr;
 
 	UAnimSequence* AnimSequence = *AnimSequenceDB->GetData();
+	// DataBindingSPBindRaw(FActCreateNewNotify, "CreateNewNotify", this, &SActNotifyPoolLaneWidget::OnCreateNewNotify, OnCreateNewNotifyBinding)
+
 	MenuBuilder.BeginSection("AnimNotify", LOCTEXT("NotifyHeading", "Notify"));
 	{
 		if (NotifyNode)
@@ -541,7 +544,7 @@ void SActNotifyPoolLaneWidget::FillNewNotifyStateMenu(FMenuBuilder& MenuBuilder,
 		return;
 	}
 	UAnimSequence* AnimSequence = *AnimSequenceDB->GetData();
-	NotifyStateFilter::MakeNewNotifyPicker<UAnimNotifyState>(MenuBuilder, false, AnimSequence);
+	NotifyStateFilter::MakeNewNotifyPicker<UAnimNotifyState>(MenuBuilder, false, AnimSequence, this->SharedThis(this));
 }
 
 void SActNotifyPoolLaneWidget::FillNewNotifyMenu(FMenuBuilder& MenuBuilder, bool bIsReplaceWithMenu /* = false */)
@@ -591,7 +594,7 @@ void SActNotifyPoolLaneWidget::FillNewNotifyMenu(FMenuBuilder& MenuBuilder, bool
 		MenuBuilder.EndSection();
 	}
 
-	NotifyStateFilter::MakeNewNotifyPicker<UAnimNotify>(MenuBuilder, bIsReplaceWithMenu, AnimSequence);
+	NotifyStateFilter::MakeNewNotifyPicker<UAnimNotify>(MenuBuilder, bIsReplaceWithMenu, AnimSequence, this->SharedThis(this));
 }
 
 
@@ -643,6 +646,7 @@ void SActNotifyPoolLaneWidget::AddNewNotify(const FText& NewNotifyName, ETextCom
 			CreateNewNotify->NewNotifyName = NewNotifyName.ToString();
 		}
 		DB->SetData(CreateNewNotify);
+		OnCreateNewNotify(CreateNewNotify);
 	}
 
 	FSlateApplication::Get().DismissAllMenus();
@@ -729,7 +733,7 @@ bool SActNotifyPoolLaneWidget::CreateNewNotify(FString NewNotifyName, UClass* No
 				if (Asset)
 				{
 					uint8* Offset = (*PropIt)->ContainerPtrToValuePtr<uint8>(OutAnimNotifyEvent.Notify);
-					(*PropIt)->ImportText(*Asset->GetAsset()->GetPathName(), Offset, 0, OutAnimNotifyEvent.Notify);
+					(*PropIt)->ImportText_Direct(*Asset->GetAsset()->GetPathName(), Offset, OutAnimNotifyEvent.Notify, 0);
 					break;
 				}
 			}

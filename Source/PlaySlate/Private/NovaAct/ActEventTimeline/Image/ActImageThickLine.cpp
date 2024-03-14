@@ -8,7 +8,7 @@
 void SActImageThickLine::Construct(const FArguments& InArgs)
 {
 	Clipping = EWidgetClipping::ClipToBounds;
-	Visibility = EVisibility::HitTestInvisible;
+	// Visibility = EVisibility::HitTestInvisible;
 }
 
 int32 SActImageThickLine::OnPaint(const FPaintArgs& Args,

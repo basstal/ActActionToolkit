@@ -5,6 +5,7 @@
 
 #include "ClassViewerModule.h"
 #include "Editor.h"
+#include "EditorStyleSet.h"
 #include "SlateOptMacros.h"
 #include "Widgets/Layout/SUniformGridPanel.h"
 

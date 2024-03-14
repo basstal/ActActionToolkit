@@ -14,9 +14,9 @@
 
 SActImageHorizontalBox::~SActImageHorizontalBox()
 {
-	UE_LOG(LogNovaAct, Log, TEXT("SActImageHorizontalBox::~SActImageHorizontalBox"));
-	NovaDB::Delete("ImageTrack2LaneWidget");
-	NovaDB::Delete("ImageTrack2TableRow");
+	// UE_LOG(LogNovaAct, Log, TEXT("SActImageHorizontalBox::~SActImageHorizontalBox"));
+	// NovaDB::Delete("ImageTrack2LaneWidget");
+	// NovaDB::Delete("ImageTrack2TableRow");
 }
 
 void SActImageHorizontalBox::Construct(const FArguments& InArgs)
@@ -36,9 +36,9 @@ void SActImageHorizontalBox::Construct(const FArguments& InArgs)
 		.Thickness(FVector2D(9.0f, 9.0f));
 
 	ActImageTrackAreaPanel = SNew(SActImagePoolAreaPanel);
-	ActImageTreeView = SNew(SActImageTreeView, ActImageTrackAreaPanel.ToSharedRef())
-		.ExternalScrollbar(ScrollBar)
-		.TreeItemsSource(&TreeViewItemSource);
+	ActImageTreeView = SNew(SActImageTreeView, ActImageTrackAreaPanel.ToSharedRef(), TreeViewItemSource)
+		.ExternalScrollbar(ScrollBar);
+	// .TreeItemsSource(&TreeViewItemSource);
 	// ** 初始化 TreeView 的 ItemSource 添加 NotifyFolder 和 Notifies
 	TSharedRef<FActImageTrackFolder> ActImageTrackFolder = MakeShareable(new FActImageTrackFolder());
 	TSharedRef<SActImageTreeViewTableRow> NotifyFolder = SNew(SActImageTreeViewTableRow,
@@ -55,7 +55,7 @@ void SActImageHorizontalBox::Construct(const FArguments& InArgs)
 	ActImageTreeView->ExpandAllItems();
 
 	PinnedActImageTrackAreaPanel = SNew(SActImagePoolAreaPanel);
-	PinnedActImageTreeView = SNew(SActImageTreeView, PinnedActImageTrackAreaPanel.ToSharedRef())
+	PinnedActImageTreeView = SNew(SActImageTreeView, PinnedActImageTrackAreaPanel.ToSharedRef(), TreeViewItemSource)
 		.ExternalScrollbar(PinnedAreaScrollBar);
 
 	auto FillLeftAttr = TAttribute<float>::Create(TAttribute<float>::FGetter::CreateLambda([]()

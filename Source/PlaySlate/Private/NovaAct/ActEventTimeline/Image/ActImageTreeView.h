@@ -19,7 +19,7 @@ public:
 
 	virtual ~SActImageTreeView() override;
 	// ReSharper disable once CppHidingFunction
-	void Construct(const FArguments& InArgs, const TSharedRef<SActImagePoolAreaPanel>& InActImageTrackAreaPanel);
+	void Construct(const FArguments& InArgs, const TSharedRef<SActImagePoolAreaPanel>& InActImageTrackAreaPanel, const TArray<TSharedRef<SActImageTreeViewTableRow>>& TreeViewTableRows);
 
 
 	/**
@@ -52,6 +52,11 @@ public:
 	 * 展开所有节点
 	 */
 	void ExpandAllItems();
+
+	FVector2D GetScrollDistance() override;
+
+	FVector2D GetScrollDistanceRemaining() override;
+
 protected:
 	TSharedPtr<SActImagePoolAreaPanel> ActImageAreaPanel;
 	// DataBinding Handle
@@ -59,4 +64,3 @@ protected:
 	/** Compiled filter search terms. */
 	TSharedPtr<FTextFilterExpressionEvaluator> TextFilter;
 };
-

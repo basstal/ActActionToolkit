@@ -4,15 +4,19 @@
 #include "NovaAct/ActEventTimeline/Image/ActImageTreeViewTableRow.h"
 
 
-SActImagePoolAreaPanel::SActImagePoolAreaPanel()
-	: Children(this) {}
+SActImagePoolAreaPanel::SActImagePoolAreaPanel() :
+	Children(this)
+{
+}
 
 SActImagePoolAreaPanel::~SActImagePoolAreaPanel()
 {
 	UE_LOG(LogNovaAct, Log, TEXT("SActImagePoolAreaPanel::~SActImagePoolAreaPanel "));
 }
 
-void SActImagePoolAreaPanel::Construct(const FArguments& InArgs) {}
+void SActImagePoolAreaPanel::Construct(const FArguments& InArgs)
+{
+}
 
 void SActImagePoolAreaPanel::OnArrangeChildren(const FGeometry& AllottedGeometry, FArrangedChildren& ArrangedChildren) const
 {
@@ -65,7 +69,7 @@ FVector2D SActImagePoolAreaPanel::ComputeDesiredSize(float) const
 	return MaxSize;
 }
 
-FChildren* SActImagePoolAreaPanel::GetChildren()
+FChildren *SActImagePoolAreaPanel::GetChildren()
 {
 	return &Children;
 }
@@ -73,6 +77,7 @@ FChildren* SActImagePoolAreaPanel::GetChildren()
 TSharedRef<SActImagePoolWidget> SActImagePoolAreaPanel::MakeLaneWidgetForTrack(const TSharedRef<IActImageTrackBase>& InActImageTrack)
 {
 	TSharedRef<SActImagePoolWidget> LaneWidget = SNew(SActImagePoolWidget, InActImageTrack);
-	Children.Add(new SActImagePoolWidget::Slot(LaneWidget));
+	// Children.Add(new SActImagePoolWidget::Slot(LaneWidget));
+	Children.AddSlot(SActImagePoolWidget::Slot::FSlotArguments(MakeUnique<SActImagePoolWidget::Slot>(LaneWidget)));
 	return LaneWidget;
 }

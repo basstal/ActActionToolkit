@@ -8,6 +8,7 @@
 #define LOCTEXT_NAMESPACE "NovaAct"
 
 using namespace NovaStruct;
+class SActNotifyPoolLaneWidget;
 
 namespace NotifyStateFilter
 {
@@ -36,7 +37,6 @@ namespace NotifyStateFilter
 	FActNotifyStateClassFilter<NotifyTypeClass>::FActNotifyStateClassFilter(UAnimSequenceBase* InSequence)
 		: Sequence(InSequence)
 	{
-		NovaDB::CreateSP<FActCreateNewNotify>("CreateNewNotify", nullptr);
 	}
 
 	template <typename NotifyTypeClass>
@@ -81,7 +81,7 @@ namespace NotifyStateFilter
 	template <typename NotifyTypeClass>
 	static void MakeNewNotifyPicker(FMenuBuilder& MenuBuilder,
 	                                bool bIsReplaceWithMenu /* = false */,
-	                                UAnimSequenceBase* AnimSequence)
+	                                UAnimSequenceBase* AnimSequence, TSharedRef<SActNotifyPoolLaneWidget> PoolLaneWidget)
 	{
 		FText TypeName = NotifyTypeClass::StaticClass() == UAnimNotify::StaticClass() ?
 			                 LOCTEXT("AnimNotifyName", "anim notify") :
@@ -105,7 +105,7 @@ namespace NotifyStateFilter
 		InitOptions.bExpandRootNodes = true;
 		InitOptions.NameTypeToDisplay = EClassViewerNameTypeToDisplay::DisplayName;
 		// Add a notify picker
-		InitOptions.ClassFilter = MakeShared<FActNotifyStateClassFilter<NotifyTypeClass>>(AnimSequence);;
+		InitOptions.ClassFilters.Add(MakeShared<FActNotifyStateClassFilter<NotifyTypeClass>>(AnimSequence));
 		InitOptions.bShowBackgroundBorder = false;
 
 		FClassViewerModule& ClassViewerModule = FModuleManager::LoadModuleChecked<FClassViewerModule>("ClassViewer");
@@ -115,7 +115,7 @@ namespace NotifyStateFilter
 			.MaxDesiredHeight(400.0f)
 			[
 				ClassViewerModule.CreateClassViewer(InitOptions,
-				                                    FOnClassPicked::CreateLambda([bIsReplaceWithMenu](UClass* InClass)
+				                                    FOnClassPicked::CreateLambda([bIsReplaceWithMenu, PoolLaneWidget](UClass* InClass)
 					                                    {
 						                                    FSlateApplication::Get().DismissAllMenus();
 						                                    if (bIsReplaceWithMenu)
@@ -136,6 +136,7 @@ namespace NotifyStateFilter
 									                                    NewNotify->NotifyClass = InClass;
 								                                    }
 								                                    DB->SetData(NewNotify);
+							                                    	PoolLaneWidget->OnCreateNewNotify(NewNotify);
 							                                    }
 						                                    }
 					                                    }

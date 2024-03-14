@@ -21,7 +21,7 @@ SActSliderWidget::SActSliderWidget()
 SActSliderWidget::~SActSliderWidget()
 {
 	UE_LOG(LogNovaAct, Log, TEXT("SActSliderWidget::~SActSliderWidget"));
-	NovaDB::Delete("ActEventTimelineArgs/ViewRange");
+	// NovaDB::Delete("ActEventTimelineArgs/ViewRange");
 }
 
 void SActSliderWidget::Construct(const FArguments& InArgs, const TSharedRef<SGridPanel>& InParentGridPanel)

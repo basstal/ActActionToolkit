@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "ClassViewerModule.h"
+#include "EditorStyleSet.h"
 #include "FrameNumberNumericInterface.h"
 #include "NovaDataBinding.h"
 #include "SCurveEditor.h"

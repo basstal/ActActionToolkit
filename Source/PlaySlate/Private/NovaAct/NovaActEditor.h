@@ -28,6 +28,7 @@ public:
 
 	//~Begin FWorkflowCentricApplication interface
 	virtual bool OnRequestClose() override;
+	bool OnRequestClose(EAssetEditorCloseReason InCloseReason) override;
 	virtual FName GetToolkitFName() const override;
 	virtual FText GetBaseToolkitName() const override;
 	virtual void RegisterTabSpawners(const TSharedRef<FTabManager>& InTabManager) override;
@@ -73,6 +74,8 @@ public:
 	 */
 	void OpenNewAnimationAssetEditTab(UAnimationAsset** InAnimationAsset);
 
+	void OnClose() override;
+	virtual bool IsPrimaryEditor() const override;
 protected:
 	/** PreviewScene , Editor 没有销毁的情况下不会为空 */
 	TSharedPtr<FActViewportPreviewScene> ActViewportPreviewScene;

@@ -1,5 +1,6 @@
 ﻿#include "ActPoolWidgetNotifyWidget.h"
 
+#include "EditorStyleSet.h"
 #include "StatusBarSubsystem.h"
 #include "NovaAct/ActEventTimeline/Image/Subs/ActNotifyPoolEditorLaneWidget.h"
 #include "NovaAct/ActEventTimeline/Image/Subs/NovaActUICommandInfo.h"
@@ -18,7 +19,7 @@ using namespace NovaConst;
 
 SActPoolWidgetNotifyWidget::~SActPoolWidgetNotifyWidget()
 {
-	NovaDB::Delete("ActPoolNotify");
+	// NovaDB::Delete("ActPoolNotify");
 }
 
 void SActPoolWidgetNotifyWidget::Construct(const FArguments& InArgs, const TSharedRef<FActImageTrackNotify>& InActImageTrackNotify)
@@ -90,7 +91,6 @@ void SActPoolWidgetNotifyWidget::RefreshNotifyTracks()
 	UAnimSequenceBase* AnimSequenceBase = *(DB->GetData());
 	if (AnimSequenceBase)
 	{
-		TSharedPtr<SVerticalBox> NotifySlots;
 		PanelArea->SetContent(
 			SAssignNew(NotifySlots, SVerticalBox)
 		);

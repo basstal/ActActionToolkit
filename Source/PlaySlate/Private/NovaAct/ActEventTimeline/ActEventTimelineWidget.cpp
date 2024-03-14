@@ -9,7 +9,7 @@
 #include "NovaAct/ActEventTimeline/Components/ActTransportControlsWidget.h"
 #include "NovaAct/ActEventTimeline/Components/ActSplitterOverlay.h"
 
-#include "SEditorHeaderButton.h"
+#include "EditorStyleSet.h"
 #include "FrameNumberNumericInterface.h"
 #include "Common/NovaDataBinding.h"
 #include "Image/ActImageScrubPosition.h"
@@ -24,7 +24,7 @@ using namespace NovaConst;
 SActEventTimelineWidget::~SActEventTimelineWidget()
 {
 	UE_LOG(LogNovaAct, Log, TEXT("SActEventTimelineWidget::~SActEventTimelineWidget"));
-	NovaDB::Delete("TreeViewFilterText");
+	// NovaDB::Delete("TreeViewFilterText");
 }
 
 void SActEventTimelineWidget::Construct(const FArguments& InArgs)
@@ -120,6 +120,7 @@ void SActEventTimelineWidget::Construct(const FArguments& InArgs)
 					.Padding(ResizeBarPadding)
 					[
 						SNew(SActImageThickLine)
+						.Visibility(EVisibility::HitTestInvisible)
 					]
 
 					// ** 第1列，第1行，Overlay that draws the scrub position
@@ -127,6 +128,7 @@ void SActEventTimelineWidget::Construct(const FArguments& InArgs)
 					.Padding(ResizeBarPadding)
 					[
 						SNew(SActImageScrubPosition)
+						.Visibility(EVisibility::HitTestInvisible)
 					]
 				]
 

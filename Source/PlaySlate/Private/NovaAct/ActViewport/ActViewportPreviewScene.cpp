@@ -68,10 +68,10 @@ FActViewportPreviewScene::~FActViewportPreviewScene()
 	{
 		ActAnimationAnimSequenceDB->UnBind(OnAnimSequenceChangedHandle);
 	}
-	NovaDB::Delete("TransportControlsState");
-	NovaDB::Delete("PreviewInstanceLooping");
-	NovaDB::Delete("PreviewInstancePlaybackMode");
-	NovaDB::Delete("ActEventTimelineArgs/CurrentTime");
+	// NovaDB::Delete("TransportControlsState");
+	// NovaDB::Delete("PreviewInstanceLooping");
+	// NovaDB::Delete("PreviewInstancePlaybackMode");
+	// NovaDB::Delete("ActEventTimelineArgs/CurrentTime");
 }
 
 void FActViewportPreviewScene::AddComponent(UActorComponent* Component, const FTransform& LocalToWorld, bool bAttachToRoot)
@@ -295,7 +295,7 @@ void FActViewportPreviewScene::TickCurrentTimeChanged()
 			auto ActEventTimelineArgsDB = GetDataBindingSP(FActEventTimelineArgs, "ActEventTimelineArgs");
 			TSharedPtr<FActEventTimelineArgs> ActEventTimelineArgs = ActEventTimelineArgsDB->GetData();;
 			const double TimeAsFrame = double(CurrentTime) * ActEventTimelineArgs->TickResolution.AsDecimal();
-			ActEventTimelineArgs->CurrentTime->FrameNumber = FMath::RoundToInt(TimeAsFrame);
+			ActEventTimelineArgs->CurrentTime->FrameNumber.Value = FMath::RoundToInt(TimeAsFrame);
 			ActEventTimelineArgsDB->SetData(ActEventTimelineArgs);
 		}
 	}

@@ -151,7 +151,7 @@ namespace NovaStruct
 
 	struct FActActionTrackAreaArgs
 	{
-		int32 BeginTime;// ** 开始时间
+		int32 BeginTime; // ** 开始时间
 		float Duration; // ** 时间长度
 
 		float GetEndTime() const
@@ -255,17 +255,20 @@ namespace NovaStruct
 			return Definition;
 		}
 
-		static FActActionAnimatedPropertyKey FromPropertyType(TSubclassOf<FProperty> PropertyType)
-		{
-			FActActionAnimatedPropertyKey Definition;
-			Definition.PropertyTypeName = PropertyType->GetFName();
-			return Definition;
-		}
+		// TODO:maybe recover this
+		// static FActActionAnimatedPropertyKey FromPropertyType(TSubclassOf<FProperty> PropertyType)
+		// {
+		// 	FActActionAnimatedPropertyKey Definition;
+		// 	Definition.PropertyTypeName = PropertyType->GetFName();
+		// 	return Definition;
+		// }
 
 	protected:
-		FActActionAnimatedPropertyKey()
-			: PropertyTypeName(NAME_None),
-			  ObjectTypeName(NAME_None) { }
+		FActActionAnimatedPropertyKey() :
+			PropertyTypeName(NAME_None),
+			ObjectTypeName(NAME_None)
+		{
+		}
 	};
 
 	struct FActActionAnimatedTypeCache
@@ -281,13 +284,17 @@ namespace NovaStruct
 		typedef TFunction<TSharedRef<SWidget>(const TSharedRef<SActImageTreeViewTableRow>&, const TSharedRef<SActActionSequenceTreeViewRow>&)>
 		FOnGenerate;
 
-		FActActionSequenceTreeViewColumn(const FOnGenerate& InOnGenerate, const TAttribute<float>& InWidth)
-			: Generator(InOnGenerate),
-			  Width(InWidth) { }
+		FActActionSequenceTreeViewColumn(const FOnGenerate& InOnGenerate, const TAttribute<float>& InWidth) :
+			Generator(InOnGenerate),
+			Width(InWidth)
+		{
+		}
 
-		FActActionSequenceTreeViewColumn(FOnGenerate&& InOnGenerate, const TAttribute<float>& InWidth)
-			: Generator(MoveTemp(InOnGenerate)),
-			  Width(InWidth) { }
+		FActActionSequenceTreeViewColumn(FOnGenerate&& InOnGenerate, const TAttribute<float>& InWidth) :
+			Generator(MoveTemp(InOnGenerate)),
+			Width(InWidth)
+		{
+		}
 
 		/** Function used to generate a cell for this column */
 		FOnGenerate Generator;
@@ -302,29 +309,35 @@ namespace NovaStruct
 		/**
 		 * Construct this range from a single fixed time
 		 */
-		FActActionEvaluationRange(FFrameTime InTime, FFrameRate InFrameRate)
-			: EvaluationRange(InTime),
-			  CurrentFrameRate(InFrameRate),
-			  Direction(ENovaPlayDirection::Forwards),
-			  TimeOverride(FFrameNumber(TNumericLimits<int32>::Lowest())) { }
+		FActActionEvaluationRange(FFrameTime InTime, FFrameRate InFrameRate) :
+			EvaluationRange(InTime),
+			CurrentFrameRate(InFrameRate),
+			Direction(ENovaPlayDirection::Forwards),
+			TimeOverride(FFrameNumber(TNumericLimits<int32>::Lowest()))
+		{
+		}
 
 		/**
 		 * Construct this range from a raw range and a direction
 		 */
-		FActActionEvaluationRange(TRange<FFrameTime> InRange, FFrameRate InFrameRate, ENovaPlayDirection InDirection)
-			: EvaluationRange(InRange),
-			  CurrentFrameRate(InFrameRate),
-			  Direction(InDirection),
-			  TimeOverride(FFrameNumber(TNumericLimits<int32>::Lowest())) { }
+		FActActionEvaluationRange(TRange<FFrameTime> InRange, FFrameRate InFrameRate, ENovaPlayDirection InDirection) :
+			EvaluationRange(InRange),
+			CurrentFrameRate(InFrameRate),
+			Direction(InDirection),
+			TimeOverride(FFrameNumber(TNumericLimits<int32>::Lowest()))
+		{
+		}
 
 		/**
 		 * Construct this range from 2 times, and whether the range should include the previous time or not
 		 */
-		FActActionEvaluationRange(FFrameTime InCurrentTime, FFrameTime InPreviousTime, FFrameRate InFrameRate, bool bInclusivePreviousTime = false)
-			: EvaluationRange(FActActionEvaluationRange::CalculateEvaluationRange(InCurrentTime, InPreviousTime, bInclusivePreviousTime)),
-			  CurrentFrameRate(InFrameRate),
-			  Direction((InCurrentTime - InPreviousTime >= FFrameTime()) ? ENovaPlayDirection::Forwards : ENovaPlayDirection::Backwards),
-			  TimeOverride(TNumericLimits<int32>::Lowest()) { }
+		FActActionEvaluationRange(FFrameTime InCurrentTime, FFrameTime InPreviousTime, FFrameRate InFrameRate, bool bInclusivePreviousTime = false) :
+			EvaluationRange(FActActionEvaluationRange::CalculateEvaluationRange(InCurrentTime, InPreviousTime, bInclusivePreviousTime)),
+			CurrentFrameRate(InFrameRate),
+			Direction((InCurrentTime - InPreviousTime >= FFrameTime()) ? ENovaPlayDirection::Forwards : ENovaPlayDirection::Backwards),
+			TimeOverride(TNumericLimits<int32>::Lowest())
+		{
+		}
 
 		static TRange<FFrameTime> CalculateEvaluationRange(FFrameTime CurrentTime, FFrameTime PreviousTime, bool bInclusivePreviousTime);
 		/**
@@ -439,9 +452,11 @@ namespace NovaStruct
 	/** Helper class designed to abstract the complexity of calculating evaluation ranges for previous times and fixed time intervals */
 	struct FActActionPlaybackPosition
 	{
-		FActActionPlaybackPosition()
-			: InputRate(0, 0),
-			  OutputRate(0, 0) { }
+		FActActionPlaybackPosition() :
+			InputRate(0, 0),
+			OutputRate(0, 0)
+		{
+		}
 
 		/**
 		 * @return The input frame rate that all frame times provided to this class will be interpreted as
@@ -516,7 +531,6 @@ namespace NovaStruct
 		 */
 		FActActionEvaluationRange GetCurrentPositionAsRange() const;
 
-
 	protected:
 		/**
 		 * Check this class's invariants
@@ -544,10 +558,12 @@ namespace NovaStruct
 
 	struct FActActionAutoScrubTarget
 	{
-		FActActionAutoScrubTarget(FFrameTime InDestinationTime, FFrameTime InSourceTime, double InStartTime)
-			: DestinationTime(InDestinationTime),
-			  SourceTime(InSourceTime),
-			  StartTime(InStartTime) { }
+		FActActionAutoScrubTarget(FFrameTime InDestinationTime, FFrameTime InSourceTime, double InStartTime) :
+			DestinationTime(InDestinationTime),
+			SourceTime(InSourceTime),
+			StartTime(InStartTime)
+		{
+		}
 
 		FFrameTime DestinationTime;
 		FFrameTime SourceTime;

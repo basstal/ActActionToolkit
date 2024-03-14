@@ -11,10 +11,10 @@
 
 SActImageTreeView::~SActImageTreeView()
 {
-	NovaDB::Delete("ActImageTrack/Refresh");
+	// NovaDB::Delete("ActImageTrack/Refresh");
 }
 
-void SActImageTreeView::Construct(const FArguments& InArgs, const TSharedRef<SActImagePoolAreaPanel>& InActImageTrackAreaPanel)
+void SActImageTreeView::Construct(const FArguments& InArgs, const TSharedRef<SActImagePoolAreaPanel>& InActImageTrackAreaPanel, const TArray<TSharedRef<SActImageTreeViewTableRow>>& TreeViewTableRows)
 {
 	NovaDB::CreateSP<IActImageTrackBase>("ActImageTrack/Refresh", nullptr);
 	// ** TODO:应该把这个放到外面去
@@ -28,7 +28,8 @@ void SActImageTreeView::Construct(const FArguments& InArgs, const TSharedRef<SAc
 		.FillWidth(1.0f);
 	FArguments TreeViewArgs;
 	{
-		TreeViewArgs._TreeItemsSource = InArgs._TreeItemsSource;
+		// ** TODO:在新版本 ue 5.3 中这里可能导致问题
+		// TreeViewArgs._TreeItemsSource = InArgs._TreeItemsSource;
 		TreeViewArgs._SelectionMode = ESelectionMode::None;
 		TreeViewArgs._HeaderRow = HeaderRow;
 		TreeViewArgs._HighlightParentNodesForSelection = true;
@@ -38,6 +39,7 @@ void SActImageTreeView::Construct(const FArguments& InArgs, const TSharedRef<SAc
 		TreeViewArgs._OnExpansionChanged.BindRaw(this, &SActImageTreeView::OnExpansionChanged);
 		TreeViewArgs._ExternalScrollbar = InArgs._ExternalScrollbar;
 		TreeViewArgs._OnGenerateRow.BindRaw(this, &SActImageTreeView::OnTreeViewGenerateRow);
+		TreeViewArgs.TreeItemsSource(&TreeViewTableRows);
 	}
 	STreeView::Construct(TreeViewArgs);
 
@@ -131,9 +133,30 @@ void SActImageTreeView::OnFilterChanged(FText InFilterText)
 
 void SActImageTreeView::ExpandAllItems()
 {
+	if (!HasValidRootItemsSource())
+	{
+		return;
+	}
 	// expand all
-	for (const TSharedRef<SActImageTreeViewTableRow>& TableRow : *TreeItemsSource)
+	for (const TSharedRef<SActImageTreeViewTableRow>& TableRow : GetRootItems())
 	{
 		SetItemExpansion(TableRow, true);
 	}
+}
+
+FVector2D SActImageTreeView::GetScrollDistance()
+{
+	if (ScrollBar)
+	{
+		return FVector2D(0, ScrollBar->DistanceFromTop());
+	}
+	return FVector2D(0, 0);
+}
+FVector2D SActImageTreeView::GetScrollDistanceRemaining()
+{
+	if (ScrollBar)
+	{
+		return FVector2D(0, ScrollBar->DistanceFromBottom());
+	}
+	return FVector2D(0, 0);
 }

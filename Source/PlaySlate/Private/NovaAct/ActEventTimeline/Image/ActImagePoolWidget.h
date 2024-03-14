@@ -23,6 +23,10 @@ public:
 		/** NOTE:必须是public的因为LayoutUtils.h在用这个字段，Vertical alignment for the slot. */
 		EVerticalAlignment VAlignment;
 
+		EHorizontalAlignment GetHorizontalAlignment() const;
+
+		EVerticalAlignment GetVerticalAlignment() const;
+
 	protected:
 		/** Slot 的具体 Widget 内容，这里是WeakPtr是因为基类有对 Widget 的管理 */
 		TSharedPtr<SActImagePoolWidget> SlotContent;

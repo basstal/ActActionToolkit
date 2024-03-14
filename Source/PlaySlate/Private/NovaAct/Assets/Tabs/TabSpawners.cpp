@@ -1,5 +1,6 @@
 ﻿#include "TabSpawners.h"
 
+#include "EditorStyleSet.h"
 #include "Common/NovaConst.h"
 #include "NovaAct/ActViewport/ActViewportTabWidget.h"
 #include "WorkflowOrientedApp/ApplicationMode.h"

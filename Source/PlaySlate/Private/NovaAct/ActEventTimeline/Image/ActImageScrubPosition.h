@@ -23,5 +23,6 @@ public:
 	                      int32 LayerId,
 	                      const FWidgetStyle& InWidgetStyle,
 	                      bool bParentEnabled) const override;
+	
 	//~End SWidget interface
 };

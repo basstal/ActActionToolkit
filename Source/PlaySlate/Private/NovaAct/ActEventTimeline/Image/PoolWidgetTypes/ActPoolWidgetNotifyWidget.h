@@ -111,6 +111,8 @@ protected:
 	FStatusBarMessageHandle StatusBarMessageHandle;
 	// 所有被选中的节点
 	TSet<TSharedRef<SWidget const>> SelectedNotifyNodes;
+
+	TSharedPtr<SVerticalBox> NotifySlots;
 public:
 	/** Cached list of anim tracks for notify node drag drop */
 	TArray<TSharedPtr<SActNotifyPoolLaneWidget>> NotifyLanes;

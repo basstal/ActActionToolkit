@@ -22,6 +22,14 @@ float SActImagePoolWidget::Slot::GetVerticalOffset() const
 {
 	return SlotContent.IsValid() ? SlotContent->GetPhysicalPosition() : 0.f;
 }
+EHorizontalAlignment SActImagePoolWidget::Slot::GetHorizontalAlignment() const
+{
+	return HAlignment;
+}
+EVerticalAlignment SActImagePoolWidget::Slot::GetVerticalAlignment() const
+{
+	return VAlignment;
+}
 
 void SActImagePoolWidget::Construct(const FArguments& InArgs, const TSharedRef<IActImageTrackBase>& InActImageTack)
 {

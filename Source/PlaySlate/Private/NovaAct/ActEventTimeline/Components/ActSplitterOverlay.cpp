@@ -5,7 +5,8 @@ void SActSplitterOverlay::Construct(const FArguments& InArgs)
 	SetVisibility(EVisibility::SelfHitTestInvisible);
 
 	// ** 这种语法将参数作为SNew的第一个参数传入，因为在SNew中的参数将作为除FArguments以外的第一个参数传入，并且RequiredArgs::MakeRequiredArgs也无法直接赋值结构体
-	Splitter = SNew(SSplitter) = InArgs;
+	// ** 5.3 这里换了一个 SArgumentNew 宏，改了一下顺序 
+	Splitter = SArgumentNew(InArgs, SSplitter);
 	Splitter->SetVisibility(EVisibility::HitTestInvisible);
 	AddSlot()
 	[

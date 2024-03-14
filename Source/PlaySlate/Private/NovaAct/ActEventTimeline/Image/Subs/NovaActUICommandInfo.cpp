@@ -1,5 +1,7 @@
 ﻿#include "NovaActUICommandInfo.h"
 
+#include "EditorStyleSet.h"
+
 
 #define LOCTEXT_NAMESPACE "NovaAct"
 

@@ -101,6 +101,8 @@ protected:
 	TSharedPtr<SOverlay> NodeSlots;
 	// 用来记录右键打开菜单的时间位置，以便赋值给新建的 AnimNotifyEvent
 	float LastClickedTime;
+
+	FDelegateHandle OnCreateNewNotifyBinding;
 public:
 	int32 LaneIndex;
 	// 缓存的 TrackScale 结构

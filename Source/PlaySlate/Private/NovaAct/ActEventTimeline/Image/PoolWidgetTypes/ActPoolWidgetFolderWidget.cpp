@@ -1,13 +1,16 @@
 ﻿#include "ActPoolWidgetFolderWidget.h"
 
+#include "EditorStyleSet.h"
 #include "Common/NovaConst.h"
 #include "NovaAct/ActEventTimeline/Image/ImageTrackTypes/ActImageTrackFolder.h"
 
 using namespace NovaConst;
 
-SActPoolWidgetFolderWidget::SActPoolWidgetFolderWidget()
-	: bIsVisible(false),
-	  bIsHovered(false) {}
+SActPoolWidgetFolderWidget::SActPoolWidgetFolderWidget() :
+	bIsVisible(false),
+	bIsHovered(false)
+{
+}
 
 void SActPoolWidgetFolderWidget::Construct(const FArguments& InArgs, const TSharedRef<FActImageTrackFolder>& InActImageTrackFolder)
 {

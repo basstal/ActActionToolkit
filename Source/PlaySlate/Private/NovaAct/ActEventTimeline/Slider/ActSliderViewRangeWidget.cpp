@@ -1,5 +1,6 @@
 ﻿#include "ActSliderViewRangeWidget.h"
 
+#include "EditorStyleSet.h"
 #include "Common/NovaDataBinding.h"
 #include "NovaAct/ActEventTimeline/Slider/ActSliderViewRangeBarWidget.h"
 #include "NovaAct/ActEventTimeline/Slider/ActSliderWidget.h"

@@ -42,19 +42,22 @@ FNovaActEditor::~FNovaActEditor()
 	UE_LOG(LogNovaAct, Log, TEXT("FNovaActEditor::~FNovaActEditor"));
 	ActViewportPreviewScene.Reset();
 
-	NovaDB::Delete("ActAnimation");
-	NovaDB::Delete("ActAnimation/AnimSequence");
-	NovaDB::Delete("ActAnimation/AnimBlueprint");
-	NovaDB::Delete("ActEventTimelineArgs");
-	NovaDB::Delete("ColumnFillCoefficientsLeft");
-	NovaDB::Delete("ActViewportPreviewScene");
+	// NovaDB::Delete("ActAnimation");
+	// NovaDB::Delete("ActAnimation/AnimSequence");
+	// NovaDB::Delete("ActAnimation/AnimBlueprint");
+	// NovaDB::Delete("ActEventTimelineArgs");
+	// NovaDB::Delete("ColumnFillCoefficientsLeft");
+	// NovaDB::Delete("ActViewportPreviewScene");
 }
 
 void FNovaActEditor::AddReferencedObjects(FReferenceCollector& Collector)
 {
 	auto DB = GetDataBindingUObject(UActAnimation, "ActAnimation");
-	UActAnimation* Data = DB->GetData();
-	Collector.AddReferencedObject(Data);
+	if (DB)
+	{
+		UActAnimation* Data = DB->GetData();
+		Collector.AddReferencedObject(Data);
+	}
 }
 
 FString FNovaActEditor::GetReferencerName() const
@@ -64,9 +67,14 @@ FString FNovaActEditor::GetReferencerName() const
 
 bool FNovaActEditor::OnRequestClose()
 {
-	UE_LOG(LogNovaAct, Log, TEXT("FNovaActEditor::OnRequestClose "));
-	NovaDB::Delete("NovaActEditor");
-	return FWorkflowCentricApplication::OnRequestClose();
+	throw std::runtime_error("Not used");
+	// UE_LOG(LogNovaAct, Log, TEXT("FNovaActEditor::OnRequestClose "));
+	// NovaDB::Delete("NovaActEditor");
+	// return FWorkflowCentricApplication::OnRequestClose(EAssetEditorCloseReason::AssetEditorHostClosed);
+}
+bool FNovaActEditor::OnRequestClose(EAssetEditorCloseReason InCloseReason)
+{
+	return FWorkflowCentricApplication::OnRequestClose(InCloseReason);
 }
 
 FName FNovaActEditor::GetToolkitFName() const
@@ -128,7 +136,6 @@ void FNovaActEditor::CreateEditorWindow(const TSharedPtr<IToolkitHost> InIToolki
 	const FPreviewScene::ConstructionValues CSV = FPreviewScene::ConstructionValues().AllowAudioPlayback(true).ShouldSimulatePhysics(true);
 	ActViewportPreviewScene = MakeShareable(new FActViewportPreviewScene(CSV));
 	NovaDB::CreateSP("ActViewportPreviewScene", ActViewportPreviewScene);
-
 	auto ActAnimationDB = GetDataBindingUObject(UActAnimation, "ActAnimation");
 	// Initialize the asset editor
 	InitAssetEditor(EToolkitMode::Standalone,
@@ -217,6 +224,14 @@ void FNovaActEditor::OpenNewAnimationAssetEditTab(UAnimationAsset** InAnimationA
 		ActEventTimelineParentDockTab->SetContent(TabContent);
 		ActEventTimelineParentDockTab->ActivateInParent(ETabActivationCause::SetDirectly);
 	}
+}
+void FNovaActEditor::OnClose()
+{
+	FWorkflowCentricApplication::OnClose();
+}
+bool FNovaActEditor::IsPrimaryEditor() const
+{
+	return false;
 }
 
 #undef LOCTEXT_NAMESPACE
